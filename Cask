@@ -13,5 +13,6 @@
 (depends-on "magit")
 (depends-on "nose")
 (depends-on "pallet")
+(depends-on "php-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
