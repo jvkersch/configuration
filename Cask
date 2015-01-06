@@ -8,6 +8,8 @@
 (depends-on "color-theme-solarized")
 (depends-on "cython-mode")
 (depends-on "flycheck")
+(depends-on "go-mode")
+(depends-on "go-play")
 (depends-on "hungry-delete")
 (depends-on "julia-mode")
 (depends-on "magit")

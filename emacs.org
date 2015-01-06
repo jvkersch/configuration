@@ -21,6 +21,7 @@
 (setq frame-title-format "Emacs: %f")
 (setq inhibit-splash-screen t)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
 (set-face-attribute 'default nil :height 160)
 
@@ -83,7 +84,7 @@ I found these convenient customizations for org-mode at [[https://github.com/how
 #+END_SRC
 
 * Modes
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (require 'use-package)
 ;;; Enable ido mode
 (use-package ido
@@ -95,11 +96,11 @@ I found these convenient customizations for org-mode at [[https://github.com/how
 
 ** Coding modes
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (setq tags-table-list '("~/.etags"))
 #+END_SRC
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (setq whitespace-style '(face empty tabs tab-mark lines-tail))
 (defun coding-hook ()
   "Enable things that are convenient across all coding buffers."
@@ -129,6 +130,14 @@ I found these convenient customizations for org-mode at [[https://github.com/how
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 
+;; Golang
+(require 'go-mode)
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq tab-width 4)
+            (setq indent-tabs-mode 1)))
+
 ;; C/C++ customizations.
 (defun c-hook ()
   "Styling for C and C++ modes."
@@ -144,7 +153,7 @@ I found these convenient customizations for org-mode at [[https://github.com/how
 
 Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nosemacs]])
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (require 'nose)
 (add-hook 'python-mode-hook
           (lambda ()
@@ -164,7 +173,7 @@ search from PDF to LaTeX document is gebaseerd op
 gebruik ik Skim, en stel ik de editor in de preferences in als
 '/usr/local/bin/emacsclient' met als opties '--no-wait +%line "%file"'
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (require 'tex-site)
 (use-package tex-site
   :init
@@ -189,7 +198,7 @@ gebruik ik Skim, en stel ik de editor in de preferences in als
 
 This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook
           (lambda ()
             (setq-default indent-tabs-mode nil)))
@@ -239,7 +248,7 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 
 Rename buffer and file it's visiting; taken from [[ http://steve.yegge.googlepages.com/my-dot-emacs-file]]
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "sNew name: ")
