@@ -47,6 +47,12 @@
 ; \n toevoegen wanneer er geen te vinden is op de laatste regel
 (setq require-final-newline t)
 
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
 (use-package undo-tree
   :init
   (progn

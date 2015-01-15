@@ -3,6 +3,7 @@
 (source marmalade)
 (source org)
 
+(depends-on "ace-jump-mode")
 (depends-on "auctex")
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "color-theme-solarized")
@@ -18,3 +19,4 @@
 (depends-on "php-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
+(depends-on "yasnippet")
