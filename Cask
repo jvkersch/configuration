@@ -12,6 +12,7 @@
 (depends-on "go-mode")
 (depends-on "go-play")
 (depends-on "hungry-delete")
+(depends-on "jedi")
 (depends-on "julia-mode")
 (depends-on "magit")
 (depends-on "nose")

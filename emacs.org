@@ -30,7 +30,7 @@
       (add-to-list 'default-frame-alist (cons 'width 100))
     (add-to-list 'default-frame-alist (cons 'width 80))))
 
-(setq exec-path 
+(setq exec-path
       (append exec-path '("/usr/local/bin/")))
 
 ; Enable CUA mode.
@@ -171,6 +171,13 @@ Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nose
             (local-set-key "\C-cp." 'nosetests-pdb-one)))
 #+END_SRC
 
+Autocomplete for Python.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)                 ; optional
+#+END_SRC
+
 ** Latex setup.
 
 Aangepast van [[http://www.jesshamrick.com/2013/03/31/macs-and-emacs/]]. Forward
@@ -209,13 +216,11 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
           (lambda ()
             (setq-default indent-tabs-mode nil)))
 
-(setq org-base-folder (expand-file-name "~/Dropbox/Documents/org"))
-
 (setq org-todo-keywords
           '((sequence "TODO" "IN-PROGRESS" "PENDING" "DONE")))
 (setq org-todo-keyword-faces
           '(("TODO" . (:foreground "red"))
-            ("IN-PROGRESS" . (:foreground "orange")) 
+            ("IN-PROGRESS" . (:foreground "orange"))
             ("PENDING" . (:foreground "yellow"))
             ("DONE" . (:foreground "green"))))
 
@@ -236,18 +241,41 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (setq org-log-done t)
 
+(setq org-base-folder (expand-file-name "~/Dropbox/org-documents/"))
 (setq org-default-notes-file (concat org-base-folder "/notes.org"))
+
+(setq my-tasks-file
+      (concat (file-name-as-directory org-base-folder) "tasks-2015.org"))
+(setq my-unsorted-tasks-file
+      (concat (file-name-as-directory org-base-folder) "unsorted-tasks.org"))
+(setq my-journal-file
+      (concat (file-name-as-directory org-base-folder) "journal.org"))
+
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+      '(("t" "Todo" entry (file+headline my-unsorted-tasks-file "Tasks")
              "* TODO %?\n  %i\n  %a")
-        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+        ("j" "Journal" entry (file+datetree my-journal-file)
              "* %?\nEntered on %U\n  %i\n  %a")))
+
+; Visit org files that I use a lot.
+(global-set-key [f3]
+                (lambda () (interactive)
+                  (find-file my-tasks-file)))
+(global-set-key [f4]
+                (lambda () (interactive)
+                  (find-file my-unsorted-tasks-file)))
 
 ; org clock mode.
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
+
+; C-c SPC is, and always will be, associated with ace-jump-mode.
+(add-hook 'org-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c SPC"))))
+
 #+END_SRC
 
 * Miscellaneous elisp snippets.
