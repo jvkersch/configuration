@@ -50,8 +50,11 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(require 'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+; (require 'ace-jump-mode)
+; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+(require 'ace-isearch-mode)
+(global-ace-isearch-mode t)
 
 (use-package undo-tree
   :init
