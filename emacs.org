@@ -50,10 +50,6 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-; (require 'ace-jump-mode)
-; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
-(require 'ace-isearch-mode)
 (global-ace-isearch-mode t)
 
 (use-package undo-tree
@@ -273,11 +269,6 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 ; org clock mode.
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
-
-; C-c SPC is, and always will be, associated with ace-jump-mode.
-(add-hook 'org-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-c SPC"))))
 
 #+END_SRC
 
