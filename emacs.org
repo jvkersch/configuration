@@ -50,7 +50,9 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+; Use ace-isearch mode and drop into ace-jump mode right away.
 (global-ace-isearch-mode t)
+(setq ace-isearch-input-idle-delay 0.0)
 
 (use-package undo-tree
   :init
