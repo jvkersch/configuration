@@ -52,7 +52,10 @@
 
 ; Use ace-isearch mode and drop into ace-jump mode right away.
 (global-ace-isearch-mode t)
-(setq ace-isearch-input-idle-delay 0.0)
+;(setq ace-isearch-input-idle-delay 0.0)
+
+; ace-window mode, with the default keymap.
+(global-set-key (kbd "M-p") 'ace-window)
 
 (use-package undo-tree
   :init

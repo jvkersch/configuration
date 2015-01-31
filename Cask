@@ -5,6 +5,7 @@
 
 (depends-on "ace-isearch")
 (depends-on "ace-jump-mode")
+(depends-on "ace-window")
 (depends-on "auctex")
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "color-theme-solarized")
