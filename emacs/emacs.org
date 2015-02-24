@@ -105,6 +105,19 @@ I found these convenient customizations for org-mode at [[https://github.com/how
 #+END_SRC
 
 
+Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highlighting_for_Systemd_Files)
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.target\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.mount\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.slice\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.socket\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.path\\'" . conf-unix-mode))
+#+END_SRC
+
 ** Jabber client
 
 #+BEGIN_SRC emacs-lisp
