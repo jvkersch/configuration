@@ -104,6 +104,17 @@ I found these convenient customizations for org-mode at [[https://github.com/how
          ("\\.pyx" . cython-mode)))
 #+END_SRC
 
+
+** Jabber client
+
+#+BEGIN_SRC emacs-lisp
+(require 'jabber)
+(setq jabber-account-list
+    '(("joris.vankerschaver@gmail.com" 
+       (:network-server . "talk.google.com")
+       (:connection-type . ssl))))
+#+END_SRC
+
 ** Coding modes
 
 #+BEGIN_SRC emacs-lisp
