@@ -10,6 +10,7 @@
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "color-theme-solarized")
 (depends-on "cython-mode")
+(depends-on "dockerfile-mode")
 (depends-on "flycheck")
 (depends-on "go-mode")
 (depends-on "go-play")
