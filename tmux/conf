@@ -1,2 +1,8 @@
+# Reconnect to SSH domain socket.
 setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
 set -g update-environment -r
+
+# Set prefix to C-\
+unbind C-b
+set -g prefix C-'\'
+bind C-'\' send-prefix
