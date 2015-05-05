@@ -1,6 +1,6 @@
-(source "melpa" "http://melpa.milkbox.net/packages/")
 (source gnu)
 (source marmalade)
+(source melpa)
 (source org)
 
 (depends-on "ace-isearch")
@@ -21,6 +21,7 @@
 (depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "nose")
+(depends-on "org-bullets")
 (depends-on "pallet")
 (depends-on "php-mode")
 (depends-on "undo-tree")
