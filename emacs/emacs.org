@@ -4,7 +4,8 @@
 ** Make sure cask.el path refers to existing file
    (TODO: Make this platform independent)
 ** Run `cask install` from within .emacs.d folder.
-
+** From within Emacs, run "M-x jedi:install-server"
+   (uses system Python by default; needs virtualenv)
 
 * Package management.
 #+BEGIN_SRC emacs-lisp
