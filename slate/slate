@@ -1,0 +1,87 @@
+config defaultToCurrentScreen true
+# Shows app icons and background apps, spreads icons in the same place.
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+config windowHintsSpread true
+
+bind e:cmd hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
+
+bind g:cmd grid padding:5 0:6,2 1:8,3
+
+# Monitor aliases
+alias laptop    0
+alias dell      1
+
+# Abstract positions
+alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+alias rightmost move screenOriginX+screenSizeX*0.4;screenOriginY screenSizeX*0.6;screenSizeY
+alias rightless move screenOriginX+screenSizeX*0.6;screenOriginY screenSizeX*0.4;screenSizeY
+alias leftmost move screenOriginX;screenOriginY screenSizeX*0.6;screenSizeY
+alias leftless move screenOriginX;screenOriginY screenSizeX*0.4;screenSizeY
+# Concrete positions
+alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${laptop}
+alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${laptop}
+alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${laptop}
+alias 1-top 		move screenOriginX;screenOriginY screenSizeX;screenSizeY/2     ${laptop}
+alias 1-bottom		move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX;screenSizeY/2     ${laptop}
+
+alias 2-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${dell}
+alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${dell}
+alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${dell}
+alias 2-top 		move screenOriginX;screenOriginY screenSizeX;screenSizeY/2     ${dell}
+alias 2-bottom		move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX;screenSizeY/2     ${dell}
+
+
+alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2       ${dell}
+alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${dell}
+
+
+# Abstract positions
+# alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+# alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+# alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+# alias topleft corner top-left resize:screenSizeX/2;screenSizeY/2
+# alias topright corner top-right resize:screenSizeX/2;screenSizeY/2
+# alias bottomleft corner bottom-left resize:screenSizeX/2;screenSizeY/2
+# alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
+
+# Numpad location Bindings
+# bind pad1 ${bottomleft}
+# bind pad2 push bottom bar-resize:screenSizeY/2
+# bind pad3 ${bottomright}
+# bind pad4 ${lefthalf}
+# bind pad5 ${full}
+# bind pad6 ${righthalf}
+# bind pad7 ${topleft}
+# bind pad8 push top bar-resize:screenSizeY/2
+# bind pad9 ${topright}
+
+# Need to adapt this to my own applications
+# layout 1monitor 'iTerm':REPEAT ${lefthalf}
+# layout 1monitor 'Emacs':REPEAT ${righthalf}
+# layout 1monitor 'Chrome':REPEAT ${full}
+
+layout 2monitors 'Emacs':MAIN_FIRST ${lefthalf}
+layout 2monitors 'iTerm':MAIN_FIRST ${righthalf}
+#layout 2monitors 'TextEdit':REPEAT ${righthalf}
+#layout 2monitors 'Chrome':MAIN_FIRST ${1-full}
+
+
+#bind l:cmd layout 2monitors
+# bind l:cmd focus 'Emacs'
+
+# bind b:cmd;alt focus 'Emacs'
+
+bind f:cmd;alt ${2-full}
+bind s:cmd;alt layout 2monitors
+
+bind l:cmd;alt ${2-left}
+bind r:cmd;alt ${2-right}
+bind t:cmd;alt ${2-top}
+bind b:cmd;alt ${2-bottom}
+
+# Default Layouts
+# default 2monitors resolutions:${mon-laptop};${mon-samsung};
+# default 1monitor  resolutions:${mon-laptop}
