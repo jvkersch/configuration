@@ -265,12 +265,13 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (setq org-todo-keywords
-          '((sequence "TODO" "IN-PROGRESS" "PENDING" "DONE")))
+      '((sequence "TODO" "IN-PROGRESS" "PENDING" "|" "DONE" "CANCELLED")))
 (setq org-todo-keyword-faces
           '(("TODO" . (:foreground "red"))
             ("IN-PROGRESS" . (:foreground "orange"))
             ("PENDING" . (:foreground "yellow"))
-            ("DONE" . (:foreground "green"))))
+            ("DONE" . (:foreground "green"))
+            ("CANCELLED" . (:foreground "lightblue"))))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
