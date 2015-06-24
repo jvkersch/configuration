@@ -115,6 +115,12 @@ I found these convenient customizations for org-mode at [[https://github.com/how
          ("\\.pyx" . cython-mode)))
 #+END_SRC
 
+I never write anything in Objective-C, but I do open plenty of Matlab files, so make that the default.
+#+BEGIN_SRC emacs-lisp
+(add-to-list
+  'auto-mode-alist
+  '("\\.m$" . octave-mode))
+#+END_SRC
 
 Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highlighting_for_Systemd_Files)
 
