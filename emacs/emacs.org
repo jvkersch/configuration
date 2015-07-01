@@ -52,6 +52,11 @@
 (setq column-number-mode t)
 (setq-default fill-column 79)
 
+; Split window horizontally (left/right) by default.
+; http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+
 ; \n toevoegen wanneer er geen te vinden is op de laatste regel
 (setq require-final-newline t)
 
