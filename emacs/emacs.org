@@ -54,8 +54,8 @@
 
 ; Split window horizontally (left/right) by default.
 ; http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
+; (setq split-height-threshold nil)
+; (setq split-width-threshold 0)
 
 ; \n toevoegen wanneer er geen te vinden is op de laatste regel
 (setq require-final-newline t)
@@ -73,6 +73,9 @@
 ;   C-u M-p <num>        Switch current window and <num>
 ;   C-u C-u M-p <num>    Delete window <num>
 (global-set-key (kbd "M-p") 'ace-window)
+
+(setq enable-recursive-minibuffers t)
+(minibuffer-depth-indicate-mode 1)
 
 (use-package undo-tree
   :init
