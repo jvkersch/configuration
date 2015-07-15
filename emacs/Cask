@@ -7,6 +7,7 @@
 (depends-on "ace-jump-mode")
 (depends-on "ace-window")
 (depends-on "auctex")
+(depends-on "bm")
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "color-theme-solarized")
 (depends-on "cython-mode")
