@@ -205,8 +205,17 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (add-hook 'latex-mode-hook      'coding-hook)
 (add-hook 'python-mode-hook     'coding-hook)
 
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+
 ;;; Python-specific customizations.
 (add-hook 'python-mode-hook     'flycheck-mode)
+
+
+; Use R's keybindings to send Python code to the interpreter
+; http://stackoverflow.com/questions/27777133
+(eval-after-load "python"
+  '(progn
+     (define-key python-mode-map (kbd "C-c C-r") 'python-shell-send-region)))
 
 ;; Haskell mode
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
