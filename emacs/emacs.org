@@ -242,6 +242,19 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (add-hook 'c++-mode-hook 'c-hook)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(defun insert-ipdb-statement ()
+  (interactive)
+  (insert "import ipdb; ipdb.set_trace()"))
+
+(defun my-python-stuff ()
+  "My customizations for Python mode"
+  (interactive)
+  (local-set-key (kbd "C-c i") 'insert-ipdb-statement))
+
+(add-hook 'python-mode-hook 'my-python-stuff)
+#+END_SRC
+
 Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nosemacs]])
 
 #+BEGIN_SRC emacs-lisp

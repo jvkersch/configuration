@@ -14,6 +14,7 @@
 (depends-on "dockerfile-mode")
 (depends-on "ess")
 (depends-on "flycheck")
+(depends-on "geiser")
 (depends-on "go-mode")
 (depends-on "go-play")
 (depends-on "haskell-mode")
