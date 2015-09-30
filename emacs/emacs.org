@@ -27,6 +27,7 @@
 (require 'hungry-delete)
 
 (setq frame-title-format "Emacs: %f")
+(tool-bar-mode -1)  ; I never use it anyway
 (setq inhibit-splash-screen t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
