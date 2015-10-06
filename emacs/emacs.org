@@ -213,8 +213,11 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 
 (defun add-good-python-path ()
   "Add the path to a decent Python installation."
+  (setq jaguar-path "~/.jaguar/envs/jaguar/bin")
   (setq python-shell-exec-path
-    (cons "~/.jaguar/envs/jaguar/bin" python-shell-exec-path)))
+    (cons jaguar-path python-shell-exec-path))
+  (setq python-check-command
+    (concat (file-name-as-directory jaguar-path) "pyflakes")))
 
 (add-hook 'python-mode-hook 'add-good-python-path)
 
