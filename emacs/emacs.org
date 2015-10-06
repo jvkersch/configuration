@@ -211,6 +211,12 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 ;;; Python-specific customizations.
 (add-hook 'python-mode-hook     'flycheck-mode)
 
+(defun add-good-python-path ()
+  "Add the path to a decent Python installation."
+  (setq python-shell-exec-path
+    (cons "~/.jaguar/envs/jaguar/bin" python-shell-exec-path)))
+
+(add-hook 'python-mode-hook 'add-good-python-path)
 
 ; Use R's keybindings to send Python code to the interpreter
 ; http://stackoverflow.com/questions/27777133
