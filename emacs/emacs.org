@@ -111,6 +111,8 @@
 
 I found these convenient customizations for org-mode at [[https://github.com/howardabrams/dot-files/blob/master/emacs-mac.org]]
 
+Note: org-block-background no longer works, see http://emacs.stackexchange.com/questions/14824/org-block-background-font-not-having-effect
+
 #+BEGIN_SRC emacs-lisp
 (defun org-src-color-blocks-dark ()
   "Colors the block headers and footers to make them stand out more for dark themes"
