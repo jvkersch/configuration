@@ -363,11 +363,11 @@ This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (setq org-log-done t)
 
-(setq org-base-folder (expand-file-name "~/Dropbox/org-documents/"))
-(setq org-default-notes-file (concat org-base-folder "/notes.org"))
+(setq org-base-folder (expand-file-name "~/src/personal-stuff/org-documents/"))
+(setq org-default-notes-file (concat org-base-folder "notes.org"))
 
-(setq my-tasks-file
-      (concat (file-name-as-directory org-base-folder) "tasks-2015.org"))
+; (setq my-tasks-file
+;       (concat (file-name-as-directory org-base-folder) "tasks-2015.org"))
 (setq my-unsorted-tasks-file
       (concat (file-name-as-directory org-base-folder) "unsorted-tasks.org"))
 (setq my-journal-file
