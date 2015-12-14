@@ -256,6 +256,10 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 ;; magit customization (give this its own section)
 (setq magit-blame-heading-format "%-20a %C %s %H")
 
+;; Use the version of Tuareg installed through opam
+(add-to-list 'load-path "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/")
+(load "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/tuareg-site-file")
+
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -285,7 +289,8 @@ Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nose
             (local-set-key "\C-cp." 'nosetests-pdb-one)))
 #+END_SRC
 
-Autocomplete for Python.
+Autocomplete for Python. Useful default keybindings: C-tab for autocomplete at
+the point, M-n/M-p to scroll through the autocomplete menu.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook 'jedi:setup)

@@ -30,7 +30,6 @@
 (depends-on "org-bullets")
 (depends-on "pallet")
 (depends-on "php-mode")
-(depends-on "tuareg")
 (depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "yaml-mode")
