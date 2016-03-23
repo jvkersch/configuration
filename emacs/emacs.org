@@ -275,6 +275,15 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (add-hook 'python-mode-hook 'my-python-stuff)
 #+END_SRC
 
+Manage virtual environments from within Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells)
+(venv-initialize-eshell)
+(setq venv-location (expand-file-name "~/.environments"))
+#+END_SRC
+
 Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nosemacs]])
 
 #+BEGIN_SRC emacs-lisp
@@ -339,6 +348,11 @@ gebruik ik Skim, en stel ik de editor in de preferences in als
 This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 
 #+BEGIN_SRC emacs-lisp
+
+;; Scale inline images to 300px. Not ideal, but better than having to set
+;; image size manually all the time.
+(setq org-image-actual-width 300)
+
 (add-hook 'org-mode-hook
           (lambda ()
             (setq-default indent-tabs-mode nil)))
