@@ -121,7 +121,7 @@ Note: org-block-background no longer works, see http://emacs.stackexchange.com/q
    '(org-block-begin-line
      ((t (:foreground "#008ED1" :background "#002E41"))))
    '(org-block-background
-     ((t (:background "#111111"))))
+     ((t (:background "#444444"))))
    '(org-block-end-line
      ((t (:foreground "#008ED1" :background "#002E41"))))
 
