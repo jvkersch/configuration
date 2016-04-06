@@ -229,6 +229,12 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
   '(progn
      (define-key python-mode-map (kbd "C-c C-r") 'python-shell-send-region)))
 
+; Set up a register with typical Python preamble
+; TODO Add this to the python-mode hook
+(set-register ?p '(
+    "# -*- coding: utf-8 -*-\n"
+    "from __future__ import division, print_function"))
+
 ;; Haskell mode
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
