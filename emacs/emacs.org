@@ -12,11 +12,20 @@
 
 * Fonts
 
-  The two snippets below are copied from [[https://github.com/howardabrams/dot-files/blob/master/emacs-client.org][Howard Abram's emacs configuration]]:
+  #+BEGIN_SRC sh :tangle no
+    # Install Hasklig
+    curl -OL https://github.com/i-tu/Hasklig/releases/download/0.9/Hasklig-0.9.tar.gz
+    tar xzvf Hasklig-0.9.tar.gz && cp Hasklig-0.9/*.otf ~/Library/Fonts/
 
-  Precondition: install Hasklig, install Source Code Pro
+    # Install Source Code Pro
+    curl -OL https://github.com/adobe-fonts/source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
+    tar xzvf 1.030R-it.tar.gz && \
+      cp source-code-pro-2.010R-ro-1.030R-it/OTF/*.otf ~/Library/Fonts
+  #+END_SRC
 
   More setup for ligatures: https://gist.github.com/i-tu/3e835955d0db554d76b7
+
+  The two snippets below are copied from [[https://github.com/howardabrams/dot-files/blob/master/emacs-client.org][Howard Abram's emacs configuration]]:
 
   #+BEGIN_SRC emacs-lisp
     (defvar ha/fixed-font-family
