@@ -18,7 +18,7 @@
 
   More setup for ligatures: https://gist.github.com/i-tu/3e835955d0db554d76b7
 
-  #+BEGIN_SRC elisp
+  #+BEGIN_SRC emacs-lisp
     (defvar ha/fixed-font-family
       (cond ((x-list-fonts "Hasklig")         "Hasklig")
             ((x-list-fonts "Source Code Pro") "Source Code Pro")
@@ -28,7 +28,7 @@
 
     (when ha/fixed-font-family
       (set-frame-font ha/fixed-font-family)
-      (set-face-attribute 'default nil :font ha/fixed-font-family :height 150)
+      (set-face-attribute 'default nil :font ha/fixed-font-family :height 160)
       (set-face-font 'default ha/fixed-font-family))
   #+END_SRC
 
