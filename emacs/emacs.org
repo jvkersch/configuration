@@ -3,12 +3,66 @@
 #+EMAIL: joris.vankerschaver@gmail.com
 #+STARTUP: showall
 
+* TODO Do BEGIN/END_SRC blocks have to be left-justified?
+
 * Installation instructions
 ** Make sure cask.el path refers to existing file
    (TODO: Make this platform independent)
 ** Run `cask install` from within .emacs.d folder.
 ** From within Emacs, run "M-x jedi:install-server"
    (uses system Python by default; needs virtualenv)
+
+* Package management.
+#+BEGIN_SRC emacs-lisp
+(require 'cask "/usr/local/share/emacs/site-lisp/cask.el")  ; Homebrew
+(cask-initialize)
+(require 'pallet)
+(pallet-mode t)
+
+(server-start)
+#+END_SRC
+
+* Setting up Emacs core
+
+  #+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Joris Vankerschaver"
+        user-email-address "Joris.Vankerschaver@gmail.com")
+  #+END_SRC
+
+  Basically, turn off all the fluff: no splash screen, short y/n answer format
+  instead of the default yes/no, no tool bar, etc.
+
+#+BEGIN_SRC emacs-lisp
+  (setq frame-title-format "Emacs: %f")
+  (tool-bar-mode -1)  ; I never use it anyway
+  (setq inhibit-splash-screen t)
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+  Show Emacs with a slightly larger screen. I should probably retire this and
+  have the window manager take care of this instead.
+
+#+BEGIN_SRC emacs-lisp
+  (when (display-graphic-p)
+    (if (> (x-display-pixel-width) 1280)
+        (add-to-list 'default-frame-alist (cons 'width 100))
+      (add-to-list 'default-frame-alist (cons 'width 80))))
+#+END_SRC
+
+  By default Emacs creates backups in the current directory. Create them in a
+  hidden directory instead, so they're out of the way.
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+END_SRC
+
+  Everything that Homebrew installs, most notably different Python
+  installations, ends up in /usr/local/bin. Add that.
+
+#+BEGIN_SRC emacs-lisp
+  (setq exec-path
+        (append exec-path '("/usr/local/bin/")))
+#+END_SRC
 
 * Fonts
 
@@ -21,11 +75,9 @@
     curl -OL https://github.com/adobe-fonts/source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
     tar xzvf 1.030R-it.tar.gz && \
       cp source-code-pro-2.010R-ro-1.030R-it/OTF/*.otf ~/Library/Fonts
-  #+END_SRC
+   #+END_SRC
 
-  More setup for ligatures: https://gist.github.com/i-tu/3e835955d0db554d76b7
-
-  The two snippets below are copied from [[https://github.com/howardabrams/dot-files/blob/master/emacs-client.org][Howard Abram's emacs configuration]]:
+  The font configuration below is copied from [[https://github.com/howardabrams/dot-files/blob/master/emacs-client.org][Howard Abram's emacs configuration]]:
 
   #+BEGIN_SRC emacs-lisp
     (defvar ha/fixed-font-family
@@ -41,76 +93,89 @@
       (set-face-font 'default ha/fixed-font-family))
   #+END_SRC
 
-* Package management.
-#+BEGIN_SRC emacs-lisp
-(require 'cask "/usr/local/share/emacs/site-lisp/cask.el")  ; Homebrew
-(cask-initialize)
-(require 'pallet)
-(pallet-mode t)
 
-(server-start)
+* Tweaks for editing in Emacs
+
+** Standard stuff
+
+   Visual line mode turns on line wrapping and causes simple editing commands
+   to act on visual lines, rather than logical lines. It's pretty much a
+   given...
+
+#+BEGIN_SRC emacs-lisp
+     (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+     (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 #+END_SRC
 
-* Global setup (display and convenience functions).
+   More uncontroversial stuff: show line numbers in the status line, show
+   column numbers as well, and set the fill column (the column beyond which
+   line wrapping should happen) to something sensible for coding.
+
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Joris Vankerschaver"
-      user-email-address "Joris.Vankerschaver@gmail.com")
+     (setq line-number-mode t)
+     (setq column-number-mode t)
+     (setq-default fill-column 79)
+#+END_SRC
 
-(require 'use-package)
-(require 'hungry-delete)
+   Add a newline on the last line when there is none. This is visually
+   pleasing, and tools like pycodestyle for Python complain about this.
 
-(setq frame-title-format "Emacs: %f")
-(tool-bar-mode -1)  ; I never use it anyway
-(setq inhibit-splash-screen t)
-(fset 'yes-or-no-p 'y-or-n-p)
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+BEGIN_SRC emacs-lisp
+     (setq require-final-newline t)
+#+END_SRC
 
-;; (set-face-attribute 'default nil :height 160)
+** CUA mode
 
-(when (display-graphic-p)
-  (if (> (x-display-pixel-width) 1280)
-      (add-to-list 'default-frame-alist (cons 'width 100))
-    (add-to-list 'default-frame-alist (cons 'width 80))))
+   [[https://www.emacswiki.org/emacs/CuaMode][CUA mode]] (Common User Access)
+   allows for more flexible selections, rectangle selection using C-RET, easy
+   access to registers, and more. It comes bundled with Emacs.
 
-(setq exec-path
-      (append exec-path '("/usr/local/bin/")))
+   I like having it around, but I don't want it to override the standard Emacs
+   keybindings.
 
-; Enable CUA mode.
-(cua-selection-mode t)
+#+BEGIN_SRC emacs-lisp
+     (cua-selection-mode t)
+#+END_SRC
 
-; Visual mode for text files
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+   Some useful [[http://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html#CUA-Bindings][CUA keybindings]]:
 
-(setq line-number-mode t)
-(setq column-number-mode t)
-(setq-default fill-column 79)
+   |-----------+--------------------------------------------|
+   | C-RET     | Start in CUA rectangle mode                |
+   | C-S-SPC   | Copy text to global mark                   |
+   | +C-1 C-w+ | Kill, yank, copy, etc to numbered register |
+   |-----------+--------------------------------------------|
 
-; Split window horizontally (left/right) by default.
-; http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal
-; (setq split-height-threshold nil)
-; (setq split-width-threshold 0)
+   (The numbered prefix keys interfere with Amethyst)
 
-; \n toevoegen wanneer er geen te vinden is op de laatste regel
-(setq require-final-newline t)
+* Useful packages for all modes
 
-(require 'yasnippet)
-(yas-global-mode 1)
+** use-package
 
-; Use ace-isearch mode and drop into ace-jump mode right away.
-(global-ace-isearch-mode t)
-;(setq ace-isearch-input-idle-delay 0.0)
+   [[https://github.com/jwiegley/use-package][use-package]] is, in its own words, a package to tidy up your .emacs
+   configuration. It allows you to run code before or after a package is loaded,
+   set up key bindings for modes, in a neat and concise declarative manner.
 
-; ace-window mode, with the default keymap.
-; Keybindings:
-;   M-p <num>            Jump to window <num>
-;   C-u M-p <num>        Switch current window and <num>
-;   C-u C-u M-p <num>    Delete window <num>
-(global-set-key (kbd "M-p") 'ace-window)
+#+BEGIN_SRC emacs-lisp
+     (require 'use-package)
+#+END_SRC
 
-(setq enable-recursive-minibuffers t)
-(minibuffer-depth-indicate-mode 1)
+** yasnippet
 
+   [[https://github.com/capitaomorte/yasnippet/blob/master/README.mdown][yasnippet]] is a templating system for Emacs. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-global-mode 1))
+
+#+END_SRC
+
+** undo-tree
+
+   Represent successive undos and redos as a tree, which can be navigated with
+   the up and down arrow keys.
+
+#+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :init
   (progn
@@ -118,8 +183,14 @@
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)))
 
-; Visual bookmarks
-; https://github.com/joodland/bm
+#+END_SRC
+
+** visual bookmarks
+
+   Leave visual bookmarks in your code via [[https://github.com/joodland/bm][bm]]. The keybindings listed here are
+   those of ... Visual Studio.
+
+#+BEGIN_SRC emacs-lisp
 (use-package bm
   :init
   (progn
@@ -135,19 +206,56 @@
 
 #+END_SRC
 
-* Color themes
+** ace-isearch mode
 
 #+BEGIN_SRC emacs-lisp
-;(load-theme 'solarized-dark t)
-(load-theme 'sanityinc-tomorrow-eighties t)
+(global-ace-isearch-mode t)
+(global-set-key (kbd "M-p") 'ace-window)
+
+(setq enable-recursive-minibuffers t)
+(minibuffer-depth-indicate-mode 1)
 #+END_SRC
 
-I found these convenient customizations for org-mode at [[https://github.com/howardabrams/dot-files/blob/master/emacs-mac.org]]
+** Hungry delete
 
-Note: org-block-background no longer works, see http://emacs.stackexchange.com/questions/14824/org-block-background-font-not-having-effect
+   Does what it says -- delete *all* whitespace with one stroke of backspace.
 
 #+BEGIN_SRC emacs-lisp
-(defun org-src-color-blocks-dark ()
+(require 'hungry-delete)
+#+END_SRC
+
+** ido-mode
+
+   [[https://www.emacswiki.org/emacs/InteractivelyDoThings][Interactively Do Things]]: typing the first few characters of a buffer to
+   switch to or a file to open will narrow down successive choices.
+
+#+BEGIN_SRC emacs-lisp
+(ido-mode t)
+#+END_SRC
+
+* Color themes
+
+  Make code blocks in Org-mode stand out from the rest of the text. I stole
+  this from [[https://github.com/howardabrams/dot-files/blob/master/emacs-mac.org][Howard Abrams]].
+
+#+BEGIN_SRC emacs-lisp
+(defun ha/org-src-color-blocks-light ()
+  "Colors the block headers and footers to make them stand out more for lighter themes"
+  (interactive)
+  (custom-set-faces
+   '(org-block-begin-line
+    ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+   '(org-block-background
+     ((t (:background "#FFFFEA"))))
+   '(org-block
+     ((t (:background "#FFFFEA"))))
+   '(org-block-end-line
+     ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+
+   '(mode-line-buffer-id ((t (:foreground "#005000" :bold t))))
+   '(which-func ((t (:foreground "#008000"))))))
+
+(defun ha/org-src-color-blocks-dark ()
   "Colors the block headers and footers to make them stand out more for dark themes"
   (interactive)
   (custom-set-faces
@@ -161,29 +269,67 @@ Note: org-block-background no longer works, see http://emacs.stackexchange.com/q
    '(mode-line-buffer-id ((t (:foreground "black" :bold t))))
    '(which-func ((t (:foreground "green")))))
 )
-(org-src-color-blocks-dark)
 #+END_SRC
 
-* Modes
 #+BEGIN_SRC emacs-lisp
-(require 'use-package)
-;;; Enable ido mode
-(use-package ido
-  :init (ido-mode t))
+(defun jvk/change-theme (theme org-block-style)
+  "Change the color scheme"
+  (funcall theme)
+  (funcall org-block-style))
+
+(defun jvk/dark-color-theme ()
+  "Switch to dark color theme"
+  (jvk/change-theme 'color-theme-sanityinc-tomorrow-night
+                    'ha/org-src-color-blocks-dark))
+
+(defun jvk/light-color-theme ()
+  "Switch to light color theme"
+  (jvk/change-theme 'color-theme-sanityinc-tomorrow-day
+                    'ha/org-src-color-blocks-light))
+
+(jvk/dark-color-theme)
+;(jvk/light-color-theme)
+#+END_SRC
+
+
+* Coding modes
+
+#+BEGIN_SRC emacs-lisp
+(setq tags-table-list '("~/.etags"))
+#+END_SRC
+
+** Magit
+   
+   Show commit SHA in blame mode.
+
+#+BEGIN_SRC emacs-lisp
+(setq magit-blame-heading-format "%-20a %C %s %H")
+#+END_SRC
+
+** Cython mode
+
+   Open Sage Cython files (.spyx) as well as regular Cython/Pyrex files (.pyx)
+   in cython mode.
+
+#+BEGIN_SRC emacs-lisp
 (use-package cython-mode
   :mode (("\\.spyx" . cython-mode)
          ("\\.pyx" . cython-mode)))
 #+END_SRC
 
-I never write anything in Objective-C, but I do open plenty of Matlab files, so
-make that the default.
+** Octave mode
+
+   Associate the .m extension with Matlab instead of Objective C.
+
 #+BEGIN_SRC emacs-lisp
 (add-to-list
   'auto-mode-alist
   '("\\.m$" . octave-mode))
 #+END_SRC
 
-Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highlighting_for_Systemd_Files)
+** Unix files
+
+   Not coding per se, but use [[https://wiki.archlinux.org/index.php/emacs#Syntax_Highlighting_for_Systemd_Files][syntax highlighting for Unix system files]].
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
@@ -196,27 +342,10 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (add-to-list 'auto-mode-alist '("\\.path\\'" . conf-unix-mode))
 #+END_SRC
 
-** ERC
-#+BEGIN_SRC emacs-lisp
-(require 'erc)
+** Coding hook
 
-#+END_SRC
-
-** Jabber client
-
-#+BEGIN_SRC emacs-lisp
-(require 'jabber)
-(setq jabber-account-list
-    '(("joris.vankerschaver@gmail.com" 
-       (:network-server . "talk.google.com")
-       (:connection-type . ssl))))
-#+END_SRC
-
-** Coding modes
-
-#+BEGIN_SRC emacs-lisp
-(setq tags-table-list '("~/.etags"))
-#+END_SRC
+   Adapted from Jaap Eldering. Things that are convenient across all coding
+   buffers.
 
 #+BEGIN_SRC emacs-lisp
 (setq whitespace-style '(face empty tabs tab-mark lines-tail))
@@ -243,6 +372,15 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
+#+END_SRC
+
+** Python
+
+   Despite/because of Python being my language of choice, my Python
+   configuration is a huge jumble of things I copied from Stackoverflow, things
+   that I needed on the fly, and various other hacks (sometimes antiquated).
+
+#+BEGIN_SRC emacs-lisp
 ;;; Python-specific customizations.
 (add-hook 'python-mode-hook     'flycheck-mode)
 
@@ -267,39 +405,11 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (set-register ?p '(
     "# -*- coding: utf-8 -*-\n"
     "from __future__ import division, print_function"))
-
-;; Haskell mode
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-
-;; Golang
-(require 'go-mode)
-(add-hook 'go-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'gofmt-before-save)
-            (setq tab-width 4)
-            (setq indent-tabs-mode 1)))
-
-;; C/C++ customizations.
-(defun c-hook ()
-  "Styling for C and C++ modes."
-  (c-toggle-auto-hungry-state t)
-  (c-set-style "stroustrup")
-  (setq c-basic-offset 4)
-  (c-set-offset 'substatement-open 0)
-  (c-set-offset 'inline-open 0))
-
-(add-hook 'c-mode-hook   'c-hook)
-(add-hook 'c++-mode-hook 'c-hook)
-
-;; magit customization (give this its own section)
-(setq magit-blame-heading-format "%-20a %C %s %H")
-
-;; Use the version of Tuareg installed through opam
-(add-to-list 'load-path "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/")
-(load "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/tuareg-site-file")
-
 #+END_SRC
+
+*** Insert ipdb snippet at the prompt.
+
+    TODO This can probably be done much more efficiently with yasnippet.
 
 #+BEGIN_SRC emacs-lisp
 (defun insert-ipdb-statement ()
@@ -314,7 +424,7 @@ Color Unix system files (https://wiki.archlinux.org/index.php/emacs#Syntax_Highl
 (add-hook 'python-mode-hook 'my-python-stuff)
 #+END_SRC
 
-Manage virtual environments from within Emacs.
+*** Manage virtual environments from within Emacs
 
 #+BEGIN_SRC emacs-lisp
 (require 'virtualenvwrapper)
@@ -323,7 +433,9 @@ Manage virtual environments from within Emacs.
 (setq venv-location (expand-file-name "~/.environments"))
 #+END_SRC
 
-Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nosemacs]])
+*** Run nosetests from within Emacs 
+
+    Taken from [[[https://bitbucket.org/durin42/nosemacs]]].
 
 #+BEGIN_SRC emacs-lisp
 (require 'nose)
@@ -337,8 +449,12 @@ Run nosetests from within Emacs (taken from [[https://bitbucket.org/durin42/nose
             (local-set-key "\C-cpo" 'nosetests-pdb-one)))
 #+END_SRC
 
-Autocomplete for Python. Useful default keybindings: C-tab for autocomplete at
-the point, M-n/M-p to scroll through the autocomplete menu.
+*** Autocomplete for Python via Emacs Jedi
+
+    Useful default keybindings: C-tab for autocomplete at the point, M-n/M-p to
+    scroll through the autocomplete menu.
+    
+    Setting up Jedi requires a bit of installation, see the top of this file.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook 'jedi:setup)
@@ -353,7 +469,55 @@ the point, M-n/M-p to scroll through the autocomplete menu.
 
 #+END_SRC
 
-** Latex setup.
+** Haskell
+
+#+BEGIN_SRC emacs-lisp
+;; Haskell mode
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+#+END_SRC
+
+** Golang
+
+#+BEGIN_SRC emacs-lisp
+;; Golang
+(require 'go-mode)
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq tab-width 4)
+            (setq indent-tabs-mode 1)))
+#+END_SRC
+
+** C and C++
+
+#+BEGIN_SRC emacs-lisp
+;; C/C++ customizations.
+(defun c-hook ()
+  "Styling for C and C++ modes."
+  (c-toggle-auto-hungry-state t)
+  (c-set-style "stroustrup")
+  (setq c-basic-offset 4)
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'inline-open 0))
+
+(add-hook 'c-mode-hook   'c-hook)
+(add-hook 'c++-mode-hook 'c-hook)
+
+#+END_SRC
+
+** OCaml
+
+#+BEGIN_SRC emacs-lisp
+
+;; Use the version of Tuareg installed through opam
+(add-to-list 'load-path "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/")
+(load "/Users/jvkersch/.opam/4.02.3/share/emacs/site-lisp/tuareg-site-file")
+
+#+END_SRC
+
+
+** Latex
 
 Aangepast van [[http://www.jesshamrick.com/2013/03/31/macs-and-emacs/]]. Forward
 search from PDF to LaTeX document is gebaseerd op
@@ -387,10 +551,6 @@ gebruik ik Skim, en stel ik de editor in de preferences in als
 This is a hodge-podge of options that I mostly copy-pasted from elsewehere.
 
 #+BEGIN_SRC emacs-lisp
-
-;; Scale inline images to 300px. Not ideal, but better than having to set
-;; image size manually all the time.
-(setq org-image-actual-width 300)
 
 (add-hook 'org-mode-hook
           (lambda ()
