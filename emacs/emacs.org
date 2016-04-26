@@ -210,6 +210,11 @@
 
 #+BEGIN_SRC emacs-lisp
 (global-ace-isearch-mode t)
+; ace-window mode, with the default keymap.
+; Keybindings:
+;   M-p <num>            Jump to window <num>
+;   C-u M-p <num>        Switch current window and <num>
+;   C-u C-u M-p <num>    Delete window <num>
 (global-set-key (kbd "M-p") 'ace-window)
 
 (setq enable-recursive-minibuffers t)
@@ -288,7 +293,7 @@
                     'ha/org-src-color-blocks-light))
 
 (jvk/dark-color-theme)
-;(jvk/light-color-theme)
+(jvk/light-color-theme)
 #+END_SRC
 
 
@@ -467,6 +472,24 @@
           (lambda () (remove-hook 'after-change-functions
                                   'jedi:after-change-handler t)))
 
+#+END_SRC
+
+*** Use IPython as the default Python shell in Emacs
+
+    Adapted from [[https://github.com/jhamrick/emacs/blob/master/.emacs.d/settings/python-settings.el][Jess Hamrick's Emacs configuration]].
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ python-shell-interpreter "ipython"
+ python-shell-interpreter-args "--matplotlib=osx --colors=Linux"
+ python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+ python-shell-completion-setup-code
+   "from IPython.core.completerlib import module_completion"
+ python-shell-completion-module-string-code
+   "';'.join(module_completion('''%s'''))\n"
+ python-shell-completion-string-code
+   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 #+END_SRC
 
 ** Haskell
